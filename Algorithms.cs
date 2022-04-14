@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,54 +35,14 @@ namespace OrganizationMemory
     }
     public struct Algorithms {
         public static List <Int32> amountInterraptions = new List <Int32>();
-        public static void FIFO4(List<Appeal> appeals, List<PageBlocks> blocks)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("FIFO 4 блока:");
-            amountInterraptions.Add(0);
-            Console.ResetColor();
-            Console.Write(0 + ":  ");
-            foreach (PageBlocks block in blocks)
-            {
-                Console.Write(block.data + " ");
-            }
-            Console.WriteLine();
-            List<PageBlocks> blocksList = new List<PageBlocks>();
-            blocksList.AddRange(blocks);
-            PageBlocks blockEmpty = new PageBlocks();
-            PageBlocks blockInterruption = new PageBlocks(0, 'X');
-            foreach (Appeal appeal in appeals)
-            {
-                if (!blocksList.Any(x => x.data == appeal.page.ToString().First<Char>()))
-                {
-                    blocksList[0] = blockInterruption;
-                    Shift(ref blocksList, appeal.page);
-                    amountInterraptions[amountInterraptions.Count - 1] += 1;
-                }
-                else blocksList[0] = blockEmpty;
-               
-                if (blocksList.Any(x=>x.data == 'X')) Console.ForegroundColor = ConsoleColor.Red;
-                else Console.ResetColor();
-                
-                Console.Write(appeal.index + ": ");
-                foreach (PageBlocks block in blocksList)
-                {
-                    if (block.Equals(blockEmpty)) Console.Write(" ");
-                    Console.Write(block.data + " ");
-                }
-                Console.WriteLine();
-            }
-            Console.ResetColor();
-            Console.WriteLine();
-        }
 
-        public static void FIFO5(List<Appeal> appeals, List<PageBlocks> blocks)
+        public static void FIFO(List<Appeal> appeals, List<PageBlocks> blocks, int amountBlocks)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("FIFO 5 блоков:");
+            Console.WriteLine("FIFO " + amountBlocks + ": ");
             amountInterraptions.Add(0);
             Console.ResetColor();
-            Console.Write(0 + ":  ");
+            Console.Write(0 + ":     ");
             foreach (PageBlocks block in blocks)
             {
                 Console.Write(block.data + " ");
@@ -94,20 +54,20 @@ namespace OrganizationMemory
             PageBlocks blockInterruption = new PageBlocks(0, 'X');
             foreach (Appeal appeal in appeals)
             {
-                
                 if (!blocksList.Any(x => x.data == appeal.page.ToString().First<Char>()))
                 {
                     blocksList[0] = blockInterruption;
-                    if (appeal.index == 1) blocksList.Add(new PageBlocks(0, Convert.ToChar(appeal.page.ToString())));
+                    if ((appeal.index == 1) && (amountBlocks == 5)) blocksList.Add(new PageBlocks(0, Convert.ToChar(appeal.page.ToString())));
                     else Shift(ref blocksList, appeal.page);
                     amountInterraptions[amountInterraptions.Count - 1] += 1;
                 }
                 else blocksList[0] = blockEmpty;
 
+
+                Console.ResetColor();
+                Console.Write(appeal.index + "(" + appeal.page + "): ");
                 if (blocksList.Any(x => x.data == 'X')) Console.ForegroundColor = ConsoleColor.Red;
                 else Console.ResetColor();
-
-                Console.Write(appeal.index + ": ");
                 foreach (PageBlocks block in blocksList)
                 {
                     if (block.Equals(blockEmpty)) Console.Write(" ");
@@ -116,6 +76,7 @@ namespace OrganizationMemory
                 Console.WriteLine();
             }
             Console.ResetColor();
+            Console.WriteLine();
         }
         private static void Shift(ref List<PageBlocks> pageBlocks, int newData)
         {
