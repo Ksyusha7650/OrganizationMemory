@@ -17,6 +17,8 @@ namespace OrganizationMemory
             FileWork.SetBlocks(ref pageBlocks);
             Algorithms.FIFO(appeals, pageBlocks,4);
             Algorithms.FIFO(appeals, pageBlocks,5);
+            Algorithms.LRU(appeals, pageBlocks, 4);
+            Algorithms.SecondChance(appeals, pageBlocks, 4);
             Algorithms.BestAlgorithm();
         }
     }
